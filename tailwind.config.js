@@ -13,19 +13,7 @@ export default {
         extend: {
             fontFamily: {
                 sans: ["Figtree", ...defaultTheme.fontFamily.sans],
-            },
-            colors: {
-                black: "#1F1F1F",
-                "dark-black": "#121212",
-                purple: {
-                    DEFAULT: "#8B5BF4",
-                    light: "#A77BFF",
-                },
-                white: "#FFFFFF",
-                gray: {
-                    DEFAULT: "#D1D5DB",
-                },
-            },
+            }
         },
     },
 
