@@ -1,3 +1,3 @@
 <x-app-layout>
-    <h1>Home</h1>
+<x-home.media-list title="Series" :items="$series" />
 </x-app-layout>

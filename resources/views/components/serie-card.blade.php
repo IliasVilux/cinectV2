@@ -1,4 +1,4 @@
-<div class="break-inside-avoid rounded-[0.25rem] overflow-hidden relative group">
+<div class="break-inside-avoid rounded-lg overflow-hidden relative group">
     @if ($serie->poster_path)
     <img class="w-full h-auto transition-transform duration-1000 transform group-hover:scale-105" src="https://image.tmdb.org/t/p/original{{$serie->poster_path}}" alt="{{ $serie->name }}">
     @else
