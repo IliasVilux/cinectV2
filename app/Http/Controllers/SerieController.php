@@ -81,4 +81,10 @@ class SerieController extends Controller
         $series = DB::table('series')->get();
         return view('series-catalog', ['series' => $series]);
     }
+
+    public function detail($id)
+    {
+        $serie = DB::table('series')->where('id', $id)->first();
+        return view('detail', ['media' => $serie]);
+    }
 }

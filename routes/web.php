@@ -18,6 +18,7 @@ Route::middleware('auth')->group(function () {
 
     // SERIES
     Route::get('/series', [SerieController::class, 'index'])->name('serie.catalog');
+    Route::get('/serie/{id}', [SerieController::class, 'detail'])->name('serie.detail');
 });
 
 require __DIR__.'/auth.php';
