@@ -10,14 +10,16 @@ class MediaList extends Component
 {
     public $title;
     public $items;
+    public $mediaType;
 
     /**
      * Create a new component instance.
      */
-    public function __construct($title, $items)
+    public function __construct($title, $items, $mediaType)
     {
         $this->title = $title;
         $this->items = $items;
+        $this->mediaType = $mediaType;
     }
 
     /**
