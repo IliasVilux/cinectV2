@@ -1,29 +1,34 @@
 <x-app-layout>
-    <div class="max-w-6xl mx-auto mb-12">
-        <!-- Configuración de la grid con altura dinámica -->
-        <div class="grid grid-cols-3 grid-rows-[auto_1fr] gap-4">
-            <!-- Imagen (ocupa dos filas y tiene el efecto 3D) -->
-            <div class="row-span-2 p-8 bg-neutral-800 rounded-xl perspective-container">
-                <div class="image-container">
-                    <img class="w-auto rounded-xl transition-transform duration-1000 transform group-hover:scale-105 shadow-xl" src="https://image.tmdb.org/t/p/original{{$media->poster_path}}" alt="{{ $media->name }}">
+    <div class="max-w-6xl mx-3 lg:mx-auto mb-12 bg-neutral-950 border border-neutral-800 rounded-xl p-12 relative">
+        <!-- Fondo con la imagen del póster y degradado -->
+        <div class="absolute inset-0 right-0 top-0 bg-cover bg-no-repeat bg-right rounded-xl"
+            style="background-image: url('https://image.tmdb.org/t/p/original{{$media->poster_path}}'); opacity: 0.2;">
+            <div class="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-br from-neutral-800 from-20% to-transparent rounded-xl"></div>
+        </div>
+
+        <!-- Contenido de la tarjeta -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 relative z-10">
+            <div class="md:col-span-1 flex justify-center">
+                <div class="perspective-container">
+                    <div class="image-container">
+                        <img class="w-full rounded-lg shadow-2xl" src="https://image.tmdb.org/t/p/original{{$media->poster_path}}" alt="{{ $media->name }}">
+                    </div>
                 </div>
             </div>
 
-            <div class="col-span-2 bg-neutral-800 p-8 rounded-xl">
-                <h3 class="text-3xl font-bold text-black capitalize dark:text-gray-200">{{ $media->name }}</h3>
-            </div>
-
-            <div class="col-span-2 bg-neutral-800 p-8 rounded-xl flex flex-col justify-between">
-                <div>
-                    <h4 class="text-2xl font-bold text-black capitalize dark:text-gray-200">Descripción</h4>
-                    <p class="text-neutral-400 font-medium mt-1">
+            <div class="md:col-span-3">
+                <h3 class="text-3xl text-gray-200 font-bold capitalize">{{ $media->name }}</h3>
+                <div class="my-6">
+                    <p class="text-neutral-300 font-medium mt-1">
                         {{ $media->overview }}
                     </p>
                 </div>
-                <p class="text-neutral-400 font-medium">Fecha: {{ $media->air_date }}</p>
+                <p class="text-neutral-300 font-medium text-end">Fecha: {{ $media->air_date }}</p>
             </div>
         </div>
     </div>
+
+
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -41,7 +46,7 @@
                     } = e;
 
                     const rotateX = ((y / height) - 0.5) * -10;
-                    const rotateY = ((x / width) - 0.5) * 10; 
+                    const rotateY = ((x / width) - 0.5) * 10;
 
                     container.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
                 });
@@ -66,9 +71,12 @@
 
         /* Asegura que el texto largo se ajuste dentro del contenedor */
         .bg-neutral-800 h3 {
-            word-wrap: break-word;  /* Permite que las palabras largas se ajusten */
-            overflow-wrap: break-word; /* Se asegura de que el texto largo se divida */
-            white-space: normal; /* Permite que el texto se divida en múltiples líneas */
+            word-wrap: break-word;
+            /* Permite que las palabras largas se ajusten */
+            overflow-wrap: break-word;
+            /* Se asegura de que el texto largo se divida */
+            white-space: normal;
+            /* Permite que el texto se divida en múltiples líneas */
         }
     </style>
 </x-app-layout>
