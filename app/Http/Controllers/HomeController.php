@@ -10,8 +10,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $series = DB::table('series')->take(6)->get();
-        return view('home', ['series' => $series]);
+        return view('home');
 
     }
 
