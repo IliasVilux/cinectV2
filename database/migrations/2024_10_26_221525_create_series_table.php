@@ -19,6 +19,9 @@ return new class extends Migration
             $table->date('air_date')->nullable();
             $table->boolean('top')->default(false);
             $table->timestamps();
+            $table->unsignedBigInteger('genre_id')->nullable();
+
+            $table->foreign('genre_id')->references('id')->on('genres');
         });
     }
 
@@ -27,6 +30,10 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('series', function (Blueprint $table) {
+            $table->dropForeign(['genre_id']);
+        });
+
         Schema::dropIfExists('series');
     }
 };
