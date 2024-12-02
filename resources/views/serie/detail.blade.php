@@ -23,7 +23,10 @@
                         {{ $media->overview }}
                     </p>
                 </div>
-                <p class="text-neutral-300 font-medium text-end">Fecha: {{ $media->air_date }}</p>
+                <div class="text-neutral-300 font-medium flex justify-between">
+                    <p>Género: {{ $media->genre->name ?? 'Sin género' }}</p>
+                    <p>Fecha: {{ $media->air_date }}</p>
+                </div>
             </div>
         </div>
     </div>
