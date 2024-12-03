@@ -11,13 +11,13 @@
             <div class="md:col-span-1 flex justify-center">
                 <div class="perspective-container">
                     <div class="image-container">
-                        <img class="w-full rounded-lg shadow-2xl" src="https://image.tmdb.org/t/p/original{{$media->poster_path}}" alt="{{ $media->name }}">
+                        <img class="w-full rounded-lg shadow-2xl border border-purple-950" src="https://image.tmdb.org/t/p/original{{$media->poster_path}}" alt="{{ $media->name }}">
                     </div>
                 </div>
             </div>
 
             <div class="md:col-span-3">
-                <h3 class="text-3xl text-gray-200 font-bold capitalize">{{ $media->name }}</h3>
+                <h3 class="text-3xl text-purple-600 font-bold capitalize">{{ $media->name }}</h3>
                 <div class="my-6">
                     <p class="text-neutral-300 font-medium mt-1">
                         {{ $media->overview }}

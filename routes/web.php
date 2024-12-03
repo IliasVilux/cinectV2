@@ -17,7 +17,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // SERIES
-    Route::get('/series', [SerieController::class, 'index'])->name('serie.catalog');
+    Route::get('/series', [SerieController::class, 'returnSeries'])->name('serie.catalog');
     Route::get('/serie/{id}', [SerieController::class, 'detail'])->name('serie.detail');
 });
 

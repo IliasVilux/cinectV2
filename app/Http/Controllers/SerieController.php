@@ -61,9 +61,26 @@ class SerieController extends Controller
         return $allSeries;
     }
 
-    public function index()
+    public function returnSeries(Request $request)
     {
-        $series = DB::table('series')->get();
+        $orderBy = $request->get('order_by', null);
+        $direction = 'asc';
+
+        if (str_contains($orderBy, '_desc')) {
+            $direction = 'desc';
+            $orderBy = str_replace('_desc', '', $orderBy);
+        } elseif (str_contains($orderBy, '_asc')) {
+            $orderBy = str_replace('_asc', '', $orderBy);
+        }
+
+        $query = Serie::query();
+
+        if ($orderBy) {
+            $query->orderBy($orderBy, $direction);
+        }
+
+        $series = $query->get();
+
         return view('serie.catalog', ['series' => $series]);
     }
 
