@@ -63,6 +63,8 @@ class SerieController extends Controller
 
     public function returnSeries(Request $request)
     {
+        $query = Serie::query();
+
         $orderBy = $request->get('order_by', null);
         $direction = 'asc';
 
@@ -73,7 +75,11 @@ class SerieController extends Controller
             $orderBy = str_replace('_asc', '', $orderBy);
         }
 
-        $query = Serie::query();
+
+        $searchTerm = $request->get('search', null);
+        if (!empty($searchTerm)) {
+            $query->where('name', 'LIKE', '%' . $searchTerm . '%');
+        }
 
         if ($orderBy) {
             $query->orderBy($orderBy, $direction);
