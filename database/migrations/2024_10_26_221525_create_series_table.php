@@ -12,12 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('series', function (Blueprint $table) {
-            $table->id();
+            $table->unsignedInteger('id')->primary();
             $table->string('poster_path')->nullable();
             $table->string('name')->nullable();
             $table->string('overview')->nullable();
-            $table->date('air_date')->nullable();
             $table->boolean('top')->default(false);
+            $table->string('languages')->nullable();
+            $table->integer('number_of_episodes')->nullable();
+            $table->integer('number_of_seasons')->nullable();
             $table->timestamps();
             $table->unsignedBigInteger('genre_id')->nullable();
 

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Http\Controllers\GenreController;
+use App\Http\Controllers\SeasonController;
 use App\Http\Controllers\SerieController;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -33,16 +34,29 @@ class DatabaseSeeder extends Seeder
         foreach ($series as $serie)
         {
             DB::table('series')->insert([
+                'id' => $serie->{'id'},
                 'poster_path' => $serie->{'poster_path'},
                 'name' => $serie->{'name'}, 
                 'overview' => $serie->{'overview'},
                 'genre_id' => $serie->{'genre_ids'},
-                'air_date' => $serie->{'first_air_date'},
-                // 'seasons' => $serie->{'season_number'},
-                // 'total_episodes' => $serie->{'episode_count'},
-                // 'puntuation' => $serie->{'vote_average'},
+                'languages' => $serie->{'languages'},
+                'number_of_episodes' => $serie->{'number_of_episodes'},
+                'number_of_seasons' => $serie->{'number_of_seasons'},
                 'top' => false,
             ]); 
+        }
+
+        $seasonController = new SeasonController();
+        $seasons = $seasonController->store();
+        foreach ($seasons as $season)
+        {
+            DB::table('seasons')->insert([
+                'id' => $season->{'id'},
+                'name' => $season->{'name'},
+                'overview' => $season->{'overview'},
+                'number_of_episodes' => $season->{'episodes'},
+                'serie_id' => $season->{'serie_id'},
+            ]);
         }
     }
 }

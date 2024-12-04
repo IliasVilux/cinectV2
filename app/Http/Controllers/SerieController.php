@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Genre;
 use App\Models\Serie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +19,7 @@ class SerieController extends Controller
 
     public function store()
     {
-        $genres = DB::table('genres')->get();
+        $genres = Genre::get();
         $genreMap = [];
 
         foreach ($genres as $genre) {
@@ -34,7 +35,7 @@ class SerieController extends Controller
         do {
             $response = $client->request('GET', 'https://api.themoviedb.org/3/discover/tv', [
                 'query' => [
-                    'language' => 'en-US',
+                    'language' => 'es-ES',
                     'page' => $contador,
                 ],
                 'headers' => [
@@ -47,6 +48,18 @@ class SerieController extends Controller
 
             foreach ($responseSeries as $serie)
             {
+                $response = $client->request('GET', 'https://api.themoviedb.org/3/tv/' . $serie->id . '?language=es-ES', [
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $this->tmdb_api_key,
+                        'Accept' => 'application/json',
+                    ],
+                ]);
+                $responseDetail = json_decode($response->getBody());
+                
+                $serie->{'languages'} = implode(',', $responseDetail->{'languages'});
+                $serie->{'number_of_episodes'} = $responseDetail->{'number_of_episodes'};
+                $serie->{'number_of_seasons'} = $responseDetail->{'number_of_seasons'};
+                
                 if (isset($serie->{'genre_ids'}) && !empty($serie->{'genre_ids'})){
                     $serie->{'genre_ids'} = $serie->{'genre_ids'}[0];
                 } else {
