@@ -23,15 +23,52 @@
                         {{ $media->overview }}
                     </p>
                 </div>
-                <div class="text-neutral-300 font-medium flex justify-between">
-                    <p>Género: {{ $media->genre->name ?? 'Sin género' }}</p>
-                    <p>Fecha: {{ $media->air_date }}</p>
+                <div class="text-neutral-300 font-medium sm:flex justify-between">
+                    @if(!empty($media->genre->name))
+                        <p>Género: {{ $media->genre->name ?? 'Sin género' }}</p>
+                    @endif
+                    @if(!empty($media->air_date))
+                        <p>Fecha: {{ $media->air_date }}</p>
+                    @endif
+                </div>
+                <div>
+                    {{$media->languages}}
                 </div>
             </div>
         </div>
     </div>
 
+    <div x-data="{ showAll: false, seasonsToShow: 3 }" class="max-w-6xl mx-3 lg:mx-auto">
+        @foreach($media->seasons as $index => $season)
+        <div x-show="showAll || {{ $index }} < seasonsToShow" x-data="{ open: false }" x-effect="if ({{ $index }} > seasonsToShow && !showAll && open) { open = false; }" class="mb-2 bg-neutral-950 border-b border-neutral-800 rounded-xl p-3">
+            <div class="flex justify-between cursor-pointer" @click="open = !open">
+                <h4 class="text-xl text-purple-600 font-bold capitalize">{{ $season->name }}</h4>
+                <div class="flex">
+                    <p class="text-neutral-600">{{ $season->number_of_episodes }} episodios</p>
+                    <svg x-bind:class="open ? 'transform rotate-180' : 'transform rotate-0'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-6 ml-6">
+                        <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+                    </svg>
+                    </svg>
+                </div>
+            </div>
 
+            <div x-show="open" class="mt-3 text-neutral-400">
+                <p>{{ $season->overview }}</p>
+            </div>
+        </div>
+        @endforeach
+
+        <div x-show="!showAll" class="text-center mt-4">
+            <button @click="showAll = true" class="px-4 py-2 bg-neutral-700 hover:bg-purple-700 border dark:border-neutral-600 dark:hover:border-purple-500 rounded-md transition duration-300">
+                Ver más temporadas
+            </button>
+        </div>
+        <div x-show="showAll" class="text-center mt-4">
+            <button @click="showAll = false" class="px-4 py-2 bg-neutral-700 hover:bg-purple-700 border dark:border-neutral-600 dark:hover:border-purple-500 rounded-md transition duration-300">
+                Mostrar menos
+            </button>
+        </div>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
