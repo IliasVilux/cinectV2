@@ -23,16 +23,35 @@
                         {{ $media->overview }}
                     </p>
                 </div>
-                <div class="text-neutral-300 font-medium sm:flex justify-between">
+                <div class="text-neutral-300 font-medium sm:flex justify-between mb-6">
                     @if(!empty($media->genre->name))
-                        <p>Género: {{ $media->genre->name ?? 'Sin género' }}</p>
+                    <p>Género: {{ $media->genre->name ?? 'Sin género' }}</p>
                     @endif
                     @if(!empty($media->air_date))
-                        <p>Fecha: {{ $media->air_date }}</p>
+                    <p>Fecha: {{ $media->air_date }}</p>
                     @endif
                 </div>
-                <div>
-                    {{$media->languages}}
+                <div class="text-neutral-300 font-medium flex items-center">
+                    <p class="mr-2">Lenguajes:</p>
+                    @php
+                    $languages = explode(',', $media->languages);
+                    $languageToCountryMap = [
+                        'EN' => 'US',
+                        'KA' => 'GE',
+                    ];
+                    @endphp
+
+                    @foreach ($languages as $language)
+                    @php
+                    $language = trim(strtoupper($language));
+
+                    $flagCode = $languageToCountryMap[$language] ?? $language;
+                    @endphp
+                    <img
+                        alt="Bandera {{ $flagCode }}"
+                        src="https://purecatamphetamine.github.io/country-flag-icons/3x2/{{ $flagCode }}.svg"
+                        class="w-6 h-4 rounded-sm mr-1" />
+                    @endforeach
                 </div>
             </div>
         </div>
