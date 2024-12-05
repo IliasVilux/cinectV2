@@ -67,7 +67,7 @@ class SerieController extends Controller
                 }
                 $allSeries[] = $serie;
             }
-
+            
             $contador++;
         } while ($contador  <= 5);
 

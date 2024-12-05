@@ -72,7 +72,18 @@
             </div>
 
             <div x-show="open" class="mt-3 text-neutral-400">
-                <p>{{ $season->overview }}</p>
+            <p class="mb-4">{{ $season->overview }}</p>
+            <h5 class="text-lg text-neutral-300 mb-1 capitalize">Episodios:</h5>
+            <div class="grid grid-cols-4 md:grid-cols-10 gap-2">
+                    @foreach($season->episodes as $episode)
+                    <div>
+                        @if(!empty($episode->poster_path))
+                            <img class="aspect-[4/5] w-full h-auto rounded-md object-cover" src="https://image.tmdb.org/t/p/original{{$episode->poster_path}}" alt="{{ $episode->name }}">
+                        @endif
+                        <p>{{ $episode->name }}</p>
+                    </div>
+                    @endforeach
+                </div>
             </div>
         </div>
         @endforeach

@@ -11,15 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('seasons', function (Blueprint $table) {
+        Schema::create('episodes', function (Blueprint $table) {
             $table->unsignedInteger('id')->primary();
-            $table->string('name');
+            $table->string('poster_path')->nullable();
+            $table->string('name')->nullable();
             $table->string('overview')->nullable();
-            $table->integer('number_of_episodes')->nullable();
+            $table->integer('runtime')->nullable();
+            $table->integer('episode_number');
+            $table->integer('season_number');
             $table->timestamps();
-            $table->unsignedBigInteger('serie_id');
 
-            $table->foreign('serie_id')->references('id')->on('series')->onDelete('cascade');
+            $table->unsignedInteger('season_id');
+            $table->foreign('season_id')->references('id')->on('seasons')->onDelete('cascade');
         });
     }
 
@@ -28,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('seasons');
+        Schema::dropIfExists('episodes');
     }
 };

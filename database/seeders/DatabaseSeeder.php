@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Http\Controllers\EpisodeController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\SeasonController;
 use App\Http\Controllers\SerieController;
+use App\Models\Serie;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -33,7 +35,7 @@ class DatabaseSeeder extends Seeder
         $series = $serieController->store();
         foreach ($series as $serie)
         {
-            DB::table('series')->insert([
+            DB::table('series')->insertOrIgnore([
                 'id' => $serie->{'id'},
                 'poster_path' => $serie->{'poster_path'},
                 'name' => $serie->{'name'}, 
@@ -57,6 +59,27 @@ class DatabaseSeeder extends Seeder
                 'number_of_episodes' => $season->{'episodes'},
                 'serie_id' => $season->{'serie_id'},
             ]);
+        }
+
+        $episodesSeriesController = new EpisodeController();
+        $series = Serie::get();
+
+        foreach ($series as $serie)
+        {
+            $episodesSerie = $episodesSeriesController->storeSeries($serie);
+            foreach ($episodesSerie as $episode)
+            {
+                DB::table('episodes')->insert([
+                    'id' => $episode->{'id'},
+                    'poster_path' => $episode->{'still_path'},
+                    'name' => $episode->{'name'},
+                    'overview' => $episode->{'overview'},
+                    'runtime' => $episode->{'runtime'},
+                    'episode_number' => $episode->{'episode_number'},
+                    'season_number' => $episode->{'season_number'},
+                    'season_id' => $episode->{'season_id'},
+                ]);
+            }
         }
     }
 }
