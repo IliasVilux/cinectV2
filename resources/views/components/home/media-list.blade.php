@@ -76,7 +76,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        ['serie', 'film'].forEach(mediaType => {
+        ['serie', 'película'].forEach(mediaType => {
             const carousel = document.getElementById(`carousel-${mediaType}`);
             const dots = document.querySelectorAll(`.dot-${mediaType}`);
             const leftBtn = document.getElementById(`leftBtn-${mediaType}`);
