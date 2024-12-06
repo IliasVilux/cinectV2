@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Http\Controllers\EpisodeController;
+use App\Http\Controllers\FilmController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\SeasonController;
 use App\Http\Controllers\SerieController;
@@ -45,6 +46,20 @@ class DatabaseSeeder extends Seeder
                 'number_of_episodes' => $serie->{'number_of_episodes'},
                 'number_of_seasons' => $serie->{'number_of_seasons'},
                 'top' => false,
+            ]); 
+        }
+
+        $filmController = new FilmController();
+        $films = $filmController->store();
+        foreach ($films as $film)
+        {
+            DB::table('films')->insertOrIgnore([
+                'id' => $film->{'id'},
+                'poster_path' => $film->{'poster_path'},
+                'name' => $film->{'title'}, 
+                'overview' => $film->{'overview'},
+                'genre_id' => $film->{'genre_ids'},
+                'release_date' => $film->{'release_date'},
             ]); 
         }
 
