@@ -19,14 +19,31 @@ class GenreController extends Controller
         $client = new \GuzzleHttp\Client([
             'verify' => false,
         ]);
-        $response = $client->request('GET', 'https://api.themoviedb.org/3/genre/tv/list?language=es', [
+
+        $responseTV = $client->request('GET', 'https://api.themoviedb.org/3/genre/tv/list?language=es', [
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->tmdb_api_key,
                 'Accept' => 'application/json',
             ],
         ]);
-        $responseGenres = json_decode($response->getBody())->{'genres'};
-        
-        return $responseGenres;
+        $tvGenres = json_decode($responseTV->getBody())->{'genres'};
+
+        $responseMovies = $client->request('GET', 'https://api.themoviedb.org/3/genre/movie/list?language=es', [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $this->tmdb_api_key,
+                'Accept' => 'application/json',
+            ],
+        ]);
+        $movieGenres = json_decode($responseMovies->getBody())->{'genres'};
+
+        $existingGenres = array_column($tvGenres, 'name');
+
+        $uniqueMovieGenres = array_filter($movieGenres, function ($genre) use ($existingGenres) {
+            return !in_array($genre->name, $existingGenres);
+        });
+
+        $allGenres = array_merge($tvGenres, $uniqueMovieGenres);
+
+        return $allGenres;
     }
 }

@@ -19,13 +19,6 @@ class SerieController extends Controller
 
     public function store()
     {
-        $genres = Genre::get();
-        $genreMap = [];
-
-        foreach ($genres as $genre) {
-            $genreMap[$genre->id] = $genre->id; // Mapeo directo de IDs
-        }
-
         $contador = 1;
         $allSeries = array();
 
