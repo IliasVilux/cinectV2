@@ -59,7 +59,7 @@
 
     <div x-data="{ showAll: false, seasonsToShow: 3 }" class="max-w-6xl mx-3 lg:mx-auto">
         @foreach($media->seasons as $index => $season)
-        <div x-show="showAll || {{ $index }} < seasonsToShow" x-data="{ open: false }" x-effect="if ({{ $index }} > seasonsToShow && !showAll && open) { open = false; }" class="mb-2 bg-neutral-950 border-b border-neutral-800 rounded-xl p-3">
+        <div x-show="showAll || {{ $index }} < seasonsToShow" x-data="{ open: false }" x-effect="if ({{ $index }} > seasonsToShow && !showAll && open) { open = false; }" class="mb-2 bg-neutral-950 border-b border-neutral-800 rounded-md p-3">
             <div class="flex justify-between cursor-pointer" @click="open = !open">
                 <h4 class="text-xl text-purple-600 font-bold capitalize">{{ $season->name }}</h4>
                 <div class="flex">
@@ -78,11 +78,19 @@
                     @foreach($season->episodes as $episode)
                     <div>
                         @if(!empty($episode->poster_path))
-                            <img class="aspect-[4/5] w-full h-auto rounded-md object-cover" src="https://image.tmdb.org/t/p/original{{$episode->poster_path}}" alt="{{ $episode->name }}">
+                            <img class="aspect-[4/5] w-full h-auto rounded-sm object-cover" src="https://image.tmdb.org/t/p/original{{$episode->poster_path}}" alt="{{ $episode->name }}">
                         @endif
                         <p>{{ $episode->name }}</p>
                     </div>
                     @endforeach
+                </div>
+                <div class="mt-4 p-3 flex items-center bg-purple-100 border border-purple-300 text-purple-800 rounded-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 mr-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                    </svg>
+                    <p class="text-sm">
+                        Por razones de rendimiento, solo se muestran 2 episodios por temporada ya que de otra forma habrían decenas de miles en la base de datos.
+                    </p>
                 </div>
             </div>
         </div>
