@@ -8,14 +8,15 @@
         <!-- Carousel -->
         <div class="relative">
             <!-- Botón Izquierdo -->
-            <button id="leftBtn" class="absolute top-1/2 left-3 z-20 transform -translate-y-1/2 bg-purple-800 rounded-full w-10 h-10 flex items-center justify-center">
-                <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+            <button id="leftBtn-{{ $mediaType }}" class="absolute top-1/2 left-3 z-20 transform -translate-y-1/2 bg-purple-800 rounded-full w-10 h-10 flex items-center justify-center">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
                         <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l1.22 1.22a.75.75 0 1 1-1.06 1.06l-2.5-2.5a.75.75 0 0 1 0-1.06l2.5-2.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd" />
                     </svg>
                 </span>
             </button>
 
-            <div id="carousel" class="flex overflow-x-auto snap-x snap-mandatory scroll-smooth relative no-scrollbar">
+            <div id="carousel-{{ $mediaType }}" class="flex overflow-x-auto snap-x snap-mandatory scroll-smooth relative no-scrollbar">
                 @foreach ($items as $item)
                 <a href="/{{ strtolower($mediaType) }}/{{ $item->id }}" class="p-2 text-neutral-400 min-w-80 max-w-xs snap-center snap-always">
                     <img class="aspect-[4/6] w-full rounded-lg" src="https://image.tmdb.org/t/p/original{{ $item->poster_path }}" alt="{{ $item->name }}">
@@ -25,8 +26,9 @@
             </div>
 
             <!-- Botón Derecho -->
-            <button id="rightBtn" class="absolute top-1/2 right-3 z-20 transform -translate-y-1/2 bg-purple-800 rounded-full w-10 h-10 flex items-center justify-center">
-                <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+            <button id="rightBtn-{{ $mediaType }}" class="absolute top-1/2 right-3 z-20 transform -translate-y-1/2 bg-purple-800 rounded-full w-10 h-10 flex items-center justify-center">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
                         <path fill-rule="evenodd" d="M2 8c0 .414.336.75.75.75h8.69l-1.22 1.22a.75.75 0 1 0 1.06 1.06l2.5-2.5a.75.75 0 0 0 0-1.06l-2.5-2.5a.75.75 0 1 0-1.06 1.06l1.22 1.22H2.75A.75.75 0 0 0 2 8Z" clip-rule="evenodd" />
                     </svg>
                 </span>
@@ -34,9 +36,9 @@
         </div>
 
         <!-- Puntos de Navegación -->
-        <div id="dots" class="flex justify-center mt-4 space-x-4">
+        <div id="dots-{{ $mediaType }}" class="flex justify-center mt-4 space-x-4">
             @foreach ($items as $index => $item)
-            <button class="dot w-4 h-1 rounded-full bg-neutral-600" data-index="{{ $index }}"></button>
+            <button class="dot-{{ $mediaType }} w-4 h-1 rounded-full bg-neutral-600" data-index="{{ $index }}"></button>
             @endforeach
         </div>
     </div>
@@ -73,48 +75,48 @@
 </style>
 
 <script>
-    const carousel = document.getElementById('carousel');
-    const dots = document.querySelectorAll('.dot');
-    const leftBtn = document.getElementById('leftBtn');
-    const rightBtn = document.getElementById('rightBtn');
+    document.addEventListener('DOMContentLoaded', () => {
+        ['serie', 'film'].forEach(mediaType => {
+            const carousel = document.getElementById(`carousel-${mediaType}`);
+            const dots = document.querySelectorAll(`.dot-${mediaType}`);
+            const leftBtn = document.getElementById(`leftBtn-${mediaType}`);
+            const rightBtn = document.getElementById(`rightBtn-${mediaType}`);
 
-    let currentIndex = 0;
+            let currentIndex = 0;
 
-    function updateDots(index) {
-        dots.forEach(dot => dot.classList.remove('dot-active'));
-        dots[index].classList.add('dot-active');
-    }
+            function updateDots(index) {
+                dots.forEach(dot => dot.classList.remove('dot-active'));
+                dots[index].classList.add('dot-active');
+            }
 
-    function scrollToIndex(index) {
-        const itemWidth = carousel.scrollWidth / dots.length;
-        carousel.scrollTo({
-            left: index * itemWidth,
+            function scrollToIndex(index) {
+                const itemWidth = carousel.scrollWidth / dots.length;
+                carousel.scrollTo({
+                    left: index * itemWidth,
+                });
+                currentIndex = index;
+                updateDots(index);
+            }
+
+            carousel.addEventListener('scroll', () => {
+                const itemWidth = carousel.scrollWidth / dots.length;
+                currentIndex = Math.round(carousel.scrollLeft / itemWidth);
+                updateDots(currentIndex);
+            });
+
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => scrollToIndex(index));
+            });
+
+            leftBtn.addEventListener('click', () => {
+                if (currentIndex > 0) scrollToIndex(currentIndex - 1);
+            });
+
+            rightBtn.addEventListener('click', () => {
+                if (currentIndex < dots.length - 1) scrollToIndex(currentIndex + 1);
+            });
+
+            updateDots(0);
         });
-        currentIndex = index;
-        updateDots(index);
-    }
-
-    // Scroll listeners
-    carousel.addEventListener('scroll', () => {
-        const itemWidth = carousel.scrollWidth / dots.length;
-        currentIndex = Math.round(carousel.scrollLeft / itemWidth);
-        updateDots(currentIndex);
     });
-
-    // Dot navigation
-    dots.forEach((dot, index) => {
-        dot.addEventListener('click', () => scrollToIndex(index));
-    });
-
-    // Button navigation
-    leftBtn.addEventListener('click', () => {
-        if (currentIndex > 0) scrollToIndex(currentIndex - 1);
-    });
-
-    rightBtn.addEventListener('click', () => {
-        if (currentIndex < dots.length - 1) scrollToIndex(currentIndex + 1);
-    });
-
-    // Initialize
-    updateDots(0);
 </script>
