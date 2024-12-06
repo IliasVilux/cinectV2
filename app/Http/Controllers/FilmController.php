@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Film;
 use App\Models\Genre;
 use Illuminate\Http\Request;
 
@@ -61,5 +62,45 @@ class FilmController extends Controller
         } while ($contador  <= 5);
 
         return $allFilms;
+    }
+
+    public function returnFilms(Request $request)
+    {
+        $query = Film::query();
+
+        $orderBy = $request->get('order_by', null);
+        $direction = 'asc';
+
+        if (str_contains($orderBy, '_desc')) {
+            $direction = 'desc';
+            $orderBy = str_replace('_desc', '', $orderBy);
+        } elseif (str_contains($orderBy, '_asc')) {
+            $orderBy = str_replace('_asc', '', $orderBy);
+        }
+
+
+        $searchTerm = $request->get('search', null);
+        if (!empty($searchTerm)) {
+            $query->where('name', 'LIKE', '%' . $searchTerm . '%');
+        }
+
+        if ($orderBy) {
+            $query->orderBy($orderBy, $direction);
+        }
+
+        $films = $query->get();
+
+        return view('film.catalog', ['films' => $films]);
+    }
+
+    public function detail($id)
+    {
+        $film = Film::with('genre')->find($id);
+
+        if (!$film) {
+            abort(404, 'Película no encontrada');
+        }
+
+        return view('film.detail', ['media' => $film]);
     }
 }

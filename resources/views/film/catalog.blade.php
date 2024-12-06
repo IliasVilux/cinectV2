@@ -7,7 +7,7 @@
     </style>
 
     <div class="max-w-7xl mx-2 xl:mx-auto md:flex justify-between mb-6">
-        <form id="search-form" method="GET" action="{{ route('serie.catalog') }}">
+        <form id="search-form" method="GET" action="{{ route('film.catalog') }}">
             @csrf
             <input type="text"
                 name="search" id="search"
@@ -16,7 +16,7 @@
                 class="border text-sm rounded-lg block w-full md:w-72 h-auto p-2 dark:bg-neutral-950 dark:border-neutral-800 dark:placeholder-gray-400 dark:focus:ring-0 dark:focus:border-purple-500">
         </form>
 
-        <form method="GET" action="{{ route('serie.catalog') }}">
+        <form method="GET" action="{{ route('film.catalog') }}">
             @csrf
             <select name="order_by" id="order_by" onchange="this.form.submit()"
                 class="border text-sm rounded-md p-2 dark:bg-neutral-950 dark:border-neutral-800 dark:focus:ring-0 dark:focus:border-purple-500 w-full md:w-48">
@@ -30,15 +30,15 @@
     </div>
 
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 auto-rows-auto max-w-7xl mx-2 xl:mx-auto">
-        @foreach($series as $serie)
-        <x-media-card :media="$serie" mediaType="serie" />
+        @foreach($films as $film)
+        <x-media-card :media="$film" mediaType="película" />
         @endforeach
     </div>
 
     <script>
         document.getElementById('order_by').addEventListener('change', function() {
             if (this.value === '') {
-                window.location.href = '/series';
+                window.location.href = '/films';
             }
         });
 
@@ -47,7 +47,7 @@
             if (searchInput.value.trim() === '') {
                 // Prevenir que se envíe el formulario si el campo de búsqueda está vacío
                 event.preventDefault();
-                window.location.href = '/series'; // Redirigir a la página principal de series sin parámetros
+                window.location.href = '/films'; // Redirigir a la página principal de films sin parámetros
             }
         });
     </script>

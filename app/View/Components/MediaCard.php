@@ -6,16 +6,18 @@ use Closure;
 use Illuminate\View\Component;
 use Illuminate\Contracts\View\View;
 
-class SerieCard extends Component
+class MediaCard extends Component
 {
-    public $serie;
+    public $media;
+    public $mediaType;
 
     /**
      * Create a new component instance.
      */
-    public function __construct($serie)
+    public function __construct($media, $mediaType)
     {
-        $this->serie = $serie;
+        $this->media = $media;
+        $this->mediaType = $mediaType;
     }
 
     /**
@@ -23,6 +25,6 @@ class SerieCard extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.serie-card');
+        return view('components.media-card');
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FilmController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SerieController;
@@ -19,6 +20,10 @@ Route::middleware('auth')->group(function () {
     // SERIES
     Route::get('/series', [SerieController::class, 'returnSeries'])->name('serie.catalog');
     Route::get('/serie/{id}', [SerieController::class, 'detail'])->name('serie.detail');
+    
+    // FILMS
+    Route::get('/películas', [FilmController::class, 'returnFilms'])->name('film.catalog');
+    Route::get('/película/{id}', [FilmController::class, 'detail'])->name('film.detail');
 });
 
 require __DIR__.'/auth.php';
