@@ -23,8 +23,8 @@
                 <option value="">Relevancia</option>
                 <option value="name_asc" {{ request('order_by') == 'name_asc' ? 'selected' : '' }}>Nombre (A-Z)</option>
                 <option value="name_desc" {{ request('order_by') == 'name_desc' ? 'selected' : '' }}>Nombre (Z-A)</option>
-                <option value="air_date_asc" {{ request('order_by') == 'air_date_asc' ? 'selected' : '' }}>Fecha de emisión (Más antigua primero)</option>
-                <option value="air_date_desc" {{ request('order_by') == 'air_date_desc' ? 'selected' : '' }}>Fecha de emisión (Más reciente primero)</option>
+                <option value="release_date_asc" {{ request('order_by') == 'release_date_asc' ? 'selected' : '' }}>Fecha de emisión (Más antigua primero)</option>
+                <option value="release_date_desc" {{ request('order_by') == 'release_date_desc' ? 'selected' : '' }}>Fecha de emisión (Más reciente primero)</option>
             </select>
         </form>
     </div>
@@ -38,7 +38,7 @@
     <script>
         document.getElementById('order_by').addEventListener('change', function() {
             if (this.value === '') {
-                window.location.href = '/films';
+                window.location.href = '/películas';
             }
         });
 
@@ -47,7 +47,7 @@
             if (searchInput.value.trim() === '') {
                 // Prevenir que se envíe el formulario si el campo de búsqueda está vacío
                 event.preventDefault();
-                window.location.href = '/films'; // Redirigir a la página principal de films sin parámetros
+                window.location.href = '/películas'; // Redirigir a la página principal de films sin parámetros
             }
         });
     </script>
