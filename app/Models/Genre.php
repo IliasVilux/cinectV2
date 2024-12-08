@@ -16,4 +16,14 @@ class Genre extends Model
     {
         return $this->hasMany(Serie::class);
     }
+
+    public function films(): HasMany
+    {
+        return $this->hasMany(Film::class);
+    }
+
+    public function animes(): HasMany
+    {
+        return $this->hasMany(Anime::class);
+    }
 }

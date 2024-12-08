@@ -37,12 +37,19 @@ class GenreController extends Controller
         $movieGenres = json_decode($responseMovies->getBody())->{'genres'};
 
         $existingGenres = array_column($tvGenres, 'name');
-
         $uniqueMovieGenres = array_filter($movieGenres, function ($genre) use ($existingGenres) {
             return !in_array($genre->name, $existingGenres);
         });
-
         $allGenres = array_merge($tvGenres, $uniqueMovieGenres);
+
+        $responseAnime = $client->request('GET', 'https://api.jikan.moe/v4/genres/anime');
+        $animeGenres = json_decode($responseAnime->getBody())->{'data'};
+
+        $existingGenres = array_column($allGenres, 'name');
+        $uniqueAnimeGenres = array_filter($animeGenres, function ($genre) use ($existingGenres) {
+            return !in_array($genre->name, $existingGenres);
+        });
+        $allGenres = array_merge($allGenres, $uniqueAnimeGenres);
 
         return $allGenres;
     }
