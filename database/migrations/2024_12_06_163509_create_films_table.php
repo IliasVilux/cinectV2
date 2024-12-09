@@ -19,7 +19,7 @@ return new class extends Migration
             $table->boolean('top')->default(false);
             $table->date('release_date')->nullable();
             $table->timestamps();
-            $table->unsignedBigInteger('genre_id')->nullable();
+            $table->string('genre_id')->nullable();
 
             $table->foreign('genre_id')->references('id')->on('genres');
         });

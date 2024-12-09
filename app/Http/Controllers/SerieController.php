@@ -98,7 +98,7 @@ class SerieController extends Controller
 
     public function detail($id)
     {
-        $serie = Serie::with('genre')->find($id);
+        $serie = Serie::find($id);
 
         if (!$serie) {
             abort(404, 'Serie no encontrada');

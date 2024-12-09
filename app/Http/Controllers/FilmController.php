@@ -95,7 +95,7 @@ class FilmController extends Controller
 
     public function detail($id)
     {
-        $film = Film::with('genre')->find($id);
+        $film = Film::find($id);
 
         if (!$film) {
             abort(404, 'Película no encontrada');

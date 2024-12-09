@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamps();
             $table->integer('number_of_episodes')->nullable();
             $table->string('runtime')->nullable();
-            $table->unsignedBigInteger('genre_id')->nullable();
+            $table->string('genre_id')->nullable();
 
             $table->foreign('genre_id')->references('id')->on('genres');
         });
