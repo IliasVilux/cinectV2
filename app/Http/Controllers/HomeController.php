@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Anime;
 use App\Models\Film;
 use App\Models\Serie;
 use Illuminate\Http\Request;
@@ -14,7 +15,8 @@ class HomeController extends Controller
     {
         $series = Serie::take(6)->get();
         $films = Film::take(6)->get();
-        return view('home', ['series' => $series, 'films' => $films]);
+        $animes = Anime::take(6)->get();
+        return view('home', ['series' => $series, 'films' => $films, 'animes' => $animes]);
 
     }
 

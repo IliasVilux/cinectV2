@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Anime;
 use Error;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
@@ -65,5 +66,45 @@ class AnimeController extends Controller
         } while ($contador <= 100);
 
         return $allAnimes;
+    }
+
+    public function returnAnimes(Request $request)
+    {
+        $query = Anime::query();
+
+        $orderBy = $request->get('order_by', null);
+        $direction = 'asc';
+
+        if (str_contains($orderBy, '_desc')) {
+            $direction = 'desc';
+            $orderBy = str_replace('_desc', '', $orderBy);
+        } elseif (str_contains($orderBy, '_asc')) {
+            $orderBy = str_replace('_asc', '', $orderBy);
+        }
+
+
+        $searchTerm = $request->get('search', null);
+        if (!empty($searchTerm)) {
+            $query->where('name', 'LIKE', '%' . $searchTerm . '%');
+        }
+
+        if ($orderBy) {
+            $query->orderBy($orderBy, $direction);
+        }
+
+        $animes = $query->get();
+
+        return view('anime.catalog', ['animes' => $animes]);
+    }
+
+    public function detail($id)
+    {
+        $anime = Anime::find($id);
+
+        if (!$anime) {
+            abort(404, 'Anime no encontrado');
+        }
+
+        return view('anime.detail', ['media' => $anime]);
     }
 }

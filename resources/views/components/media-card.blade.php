@@ -1,7 +1,11 @@
 <div class="break-inside-avoid rounded-lg overflow-hidden relative group border border-neutral-800">
     <a href="/{{ $mediaType }}/{{ $media->id }}">
         @if ($media->poster_path)
-        <img class="w-full h-auto transition-transform duration-1000 transform group-hover:scale-105" src="https://image.tmdb.org/t/p/original{{$media->poster_path}}" alt="{{ $media->name }}">
+            @if($mediaType !== 'anime')
+            <img class="w-full h-auto transition-transform duration-1000 transform group-hover:scale-105" src="https://image.tmdb.org/t/p/original{{$media->poster_path}}" alt="{{ $media->name }}">
+            @else
+            <img class="w-full h-auto transition-transform duration-1000 transform group-hover:scale-105" src="{{$media->poster_path}}" alt="{{ $media->name }}">
+            @endif
         @else
         <div class="w-full h-80 bg-neutral-950"></div>
         @endif

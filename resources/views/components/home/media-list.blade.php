@@ -19,7 +19,11 @@
             <div id="carousel-{{ $mediaType }}" class="flex overflow-x-auto snap-x snap-mandatory scroll-smooth relative no-scrollbar">
                 @foreach ($items as $item)
                 <a href="/{{ strtolower($mediaType) }}/{{ $item->id }}" class="p-2 text-neutral-400 min-w-80 max-w-xs snap-center snap-always">
+                    @if($mediaType !== 'anime')
                     <img class="aspect-[4/6] w-full rounded-lg" src="https://image.tmdb.org/t/p/original{{ $item->poster_path }}" alt="{{ $item->name }}">
+                    @else
+                    <img class="aspect-[4/6] w-full rounded-lg" src="{{ $item->poster_path }}" alt="{{ $item->name }}">
+                    @endif
                     <p class="font-medium mt-1 truncate">{{ $item->name }}</p>
                 </a>
                 @endforeach
@@ -48,9 +52,15 @@
         <a href="/{{ strtolower($mediaType) }}/{{ $item->id }}">
             <div class="p-2 rounded-xl border border-transparent transition-colors duration-200 hover:bg-neutral-950 hover:border-neutral-800 text-neutral-400 hover:text-neutral-300">
                 <div class="relative aspect-[4/6] w-full overflow-hidden rounded-lg">
+                    @if($mediaType !== 'anime')
                     <img class="w-full h-full object-cover transition-transform duration-1000 transform hover:scale-[1.02]"
                         src="https://image.tmdb.org/t/p/original{{ $item->poster_path }}"
                         alt="{{ $item->name }}">
+                    @else
+                    <img class="w-full h-full object-cover transition-transform duration-1000 transform hover:scale-[1.02]"
+                        src="{{ $item->poster_path }}"
+                        alt="{{ $item->name }}">
+                    @endif
                 </div>
                 <p class="font-medium mt-1 truncate">{{ $item->name }}</p>
             </div>
@@ -76,7 +86,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        ['serie', 'película'].forEach(mediaType => {
+        ['serie', 'película', 'anime'].forEach(mediaType => {
             const carousel = document.getElementById(`carousel-${mediaType}`);
             const dots = document.querySelectorAll(`.dot-${mediaType}`);
             const leftBtn = document.getElementById(`leftBtn-${mediaType}`);
