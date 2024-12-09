@@ -50,7 +50,7 @@ class FilmController extends Controller
                 $film->{'runtime'} = $responseDetail->{'runtime'};
 
                 if (isset($film->{'genre_ids'}) && !empty($film->{'genre_ids'})){
-                    $film->{'genre_ids'} = $film->{'genre_ids'}[0];
+                    $film->{'genre_ids'} = 'f_' .$film->{'genre_ids'}[0];
                 } else {
                     $film->{'genre_ids'} = null;
                 }

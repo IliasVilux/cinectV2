@@ -27,6 +27,9 @@ class GenreController extends Controller
             ],
         ]);
         $tvGenres = json_decode($responseTV->getBody())->{'genres'};
+        foreach ($tvGenres as &$genre) {
+            $genre->id = 's_' . $genre->id;
+        }
 
         $responseMovies = $client->request('GET', 'https://api.themoviedb.org/3/genre/movie/list?language=es', [
             'headers' => [
@@ -35,21 +38,23 @@ class GenreController extends Controller
             ],
         ]);
         $movieGenres = json_decode($responseMovies->getBody())->{'genres'};
-
-        $existingGenres = array_column($tvGenres, 'name');
-        $uniqueMovieGenres = array_filter($movieGenres, function ($genre) use ($existingGenres) {
-            return !in_array($genre->name, $existingGenres);
-        });
-        $allGenres = array_merge($tvGenres, $uniqueMovieGenres);
+        foreach ($movieGenres as &$genre) {
+            $genre->id = 'f_' . $genre->id;
+        }
+        $allGenres = array_merge($tvGenres, $movieGenres);
 
         $responseAnime = $client->request('GET', 'https://api.jikan.moe/v4/genres/anime');
         $animeGenres = json_decode($responseAnime->getBody())->{'data'};
-
-        $existingGenres = array_column($allGenres, 'name');
-        $uniqueAnimeGenres = array_filter($animeGenres, function ($genre) use ($existingGenres) {
-            return !in_array($genre->name, $existingGenres);
-        });
-        $allGenres = array_merge($allGenres, $uniqueAnimeGenres);
+        $transformedAnimeGenres = array_map(function ($genre) {
+            return (object) [
+                'id' => $genre->mal_id,
+                'name' => $genre->name,
+            ];
+        }, $animeGenres);
+        foreach ($transformedAnimeGenres as &$genre) {
+            $genre->id = 'a_' . $genre->id;
+        }
+        $allGenres = array_merge($allGenres, $transformedAnimeGenres);
 
         return $allGenres;
     }

@@ -54,7 +54,7 @@ class SerieController extends Controller
                 $serie->{'number_of_seasons'} = $responseDetail->{'number_of_seasons'};
                 
                 if (isset($serie->{'genre_ids'}) && !empty($serie->{'genre_ids'})){
-                    $serie->{'genre_ids'} = $serie->{'genre_ids'}[0];
+                    $serie->{'genre_ids'} = 's_' . $serie->{'genre_ids'}[0];
                 } else {
                     $serie->{'genre_ids'} = null;
                 }
