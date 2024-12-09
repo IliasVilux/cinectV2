@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Http\Controllers\AnimeController;
 use App\Http\Controllers\EpisodeController;
 use App\Http\Controllers\FilmController;
 use App\Http\Controllers\GenreController;
@@ -95,6 +96,23 @@ class DatabaseSeeder extends Seeder
                     'season_id' => $episode->{'season_id'},
                 ]);
             }
+        }
+
+        $animeController = new AnimeController;
+        $animes = $animeController->store();
+
+        foreach ($animes as $anime)
+        {
+            DB::table('animes')->insert([
+                'trailer_link' => $anime->{'trailer'},
+                'release_year' => $anime->{'year'},
+                'poster_path' => $anime->{'images'},
+                'name' => $anime->{'title'},
+                'overview' => $anime->{'synopsis'},
+                'number_of_episodes' => $anime->{'episodes'},
+                'runtime' => $anime->{'duration'},
+                'genre_id' => $anime->{'genres'},
+            ]);
         }
     }
 }

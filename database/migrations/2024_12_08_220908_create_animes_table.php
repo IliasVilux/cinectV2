@@ -14,12 +14,14 @@ return new class extends Migration
         Schema::create('animes', function (Blueprint $table) {
             $table->id();
             $table->string('trailer_link')->nullable();
+            $table->year('release_year')->nullable();
             $table->string('poster_path')->nullable();
             $table->string('name')->nullable();
             $table->string('overview')->nullable();
             $table->boolean('top')->default(false);
             $table->timestamps();
             $table->integer('number_of_episodes')->nullable();
+            $table->string('runtime')->nullable();
             $table->unsignedBigInteger('genre_id')->nullable();
 
             $table->foreign('genre_id')->references('id')->on('genres');
