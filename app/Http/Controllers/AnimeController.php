@@ -7,6 +7,7 @@ use App\Models\Anime;
 use Error;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
+use Jorenvh\Share\ShareFacade;
 
 class AnimeController extends Controller
 {
@@ -105,6 +106,12 @@ class AnimeController extends Controller
             abort(404, 'Anime no encontrado');
         }
 
-        return view('anime.detail', ['media' => $anime]);
+        $shareButtons = ShareFacade::page(url('serie.detail', $id))
+            ->whatsapp()
+            ->twitter()
+            ->facebook()
+            ->getRawLinks();
+
+        return view('anime.detail', ['media' => $anime, 'shareButtons' => $shareButtons]);
     }
 }
