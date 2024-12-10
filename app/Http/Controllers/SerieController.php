@@ -7,6 +7,7 @@ use App\Models\Genre;
 use App\Models\Serie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Jorenvh\Share\ShareFacade;
 
 class SerieController extends Controller
 {
@@ -104,6 +105,12 @@ class SerieController extends Controller
             abort(404, 'Serie no encontrada');
         }
 
-        return view('serie.detail', ['media' => $serie]);
+        $shareButtons = ShareFacade::page(url('serie.detail', $id))
+            ->whatsapp()
+            ->twitter()
+            ->facebook()
+            ->getRawLinks();
+
+        return view('serie.detail', ['media' => $serie, 'shareButtons' => $shareButtons]);
     }
 }
