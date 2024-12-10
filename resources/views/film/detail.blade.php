@@ -8,10 +8,27 @@
 
         <!-- Contenido de la tarjeta -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 relative z-10">
-            <div class="md:col-span-1 flex justify-center">
+            <div class="md:col-span-1">
                 <div class="perspective-container">
                     <div class="image-container">
                         <img class="w-full rounded-lg shadow-2xl border border-purple-950" src="https://image.tmdb.org/t/p/original{{$media->poster_path}}" alt="{{ $media->name }}">
+                    </div>
+                </div>
+
+                <div class="mt-3 hidden md:block">
+                    <div class="grid grid-cols-4 gap-3 bg-black bg-opacity-75 rounded-md p-3 items-center">
+                        <i class="fa-solid fa-share-from-square text-center text-sm"></i>
+                        @foreach($shareButtons as $key => $url)
+                            <a href="{{ $url }}" class="text-center text-lg px-2 py-1 bg-neutral-800 bg-opacity-40 border-b border-neutral-800 rounded-md hover:text-purple-400 hover:border-purple-600 hover:text-md transition duration-300" target="_blank">
+                                @if($key === 'whatsapp')
+                                    <span class="fab fa-whatsapp"></span>
+                                @elseif($key === 'twitter')
+                                    <span class="fab fa-twitter"></span>
+                                @elseif($key === 'facebook')
+                                    <span class="fab fa-facebook"></span>
+                                @endif
+                            </a>
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -30,6 +47,23 @@
                     @if(!empty($media->release_date))
                     <p>Fecha: {{ $media->release_date }}</p>
                     @endif
+                </div>
+            </div>
+
+            <div class="block md:hidden">
+                <div class="grid grid-cols-4 gap-3 bg-black bg-opacity-75 rounded-md p-3 items-center">
+                    <i class="fa-solid fa-share-from-square text-center text-sm"></i>
+                    @foreach($shareButtons as $key => $url)
+                        <a href="{{ $url }}" class="text-center text-lg px-2 py-1 bg-neutral-800 bg-opacity-40 border-b border-neutral-800 rounded-md hover:text-purple-400 hover:border-purple-600 hover:text-md transition duration-300" target="_blank">
+                            @if($key === 'whatsapp')
+                                <span class="fab fa-whatsapp"></span>
+                            @elseif($key === 'twitter')
+                                <span class="fab fa-twitter"></span>
+                            @elseif($key === 'facebook')
+                                <span class="fab fa-facebook"></span>
+                            @endif
+                        </a>
+                    @endforeach
                 </div>
             </div>
         </div>

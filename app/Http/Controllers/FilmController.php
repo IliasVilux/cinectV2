@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Film;
 use App\Models\Genre;
 use Illuminate\Http\Request;
+use Jorenvh\Share\ShareFacade;
 
 class FilmController extends Controller
 {
@@ -101,6 +102,12 @@ class FilmController extends Controller
             abort(404, 'Película no encontrada');
         }
 
-        return view('film.detail', ['media' => $film]);
+        $shareButtons = ShareFacade::page(url('film.detail', $id))
+            ->whatsapp()
+            ->twitter()
+            ->facebook()
+            ->getRawLinks();
+
+        return view('film.detail', ['media' => $film, 'shareButtons' => $shareButtons]);
     }
 }
