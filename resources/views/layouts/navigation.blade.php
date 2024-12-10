@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white dark:bg-neutral-950 border-b border-gray-100 dark:border-purple-600 mb-12">
+<nav x-data="{ open: false }" class="bg-white dark:bg-neutral-950 border-b border-neutral-100 dark:border-purple-600 mb-12">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -29,8 +29,11 @@
                 @auth
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-sm text-gray-500 dark:text-gray-400 bg-white dark:bg-zinc-900 hover:text-purple-600 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                            <p>{{ Auth::user()->name }}</p>
+                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-neutral-500 dark:text-neutral-400 bg-white dark:bg-neutral-900 hover:text-purple-600 dark:hover:text-neutral-300 focus:outline-none transition ease-in-out duration-150">
+                            <div class="flex justify-center items-center">
+                                <img class="aspect-square size-7 rounded-full" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.kindpng.com%2Fpicc%2Fm%2F722-7221920_placeholder-profile-image-placeholder-png-transparent-png.png&f=1&nofb=1&ipt=b2baf921fe788e2b400af96832f5689dc35c864ff33a02dbb473242af23c6736&ipo=images">
+                                <p class="ml-3">{{ Auth::user()->name }}</p>
+                            </div>
                             <div class="ms-1">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -41,7 +44,7 @@
 
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
+                            {{ __('Perfil') }}
                         </x-dropdown-link>
 
                         <!-- Authentication -->
@@ -51,7 +54,7 @@
                             <x-dropdown-link :href="route('logout')"
                                 onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                {{ __('Log Out') }}
+                                {{ __('Cerrar Sesión') }}
                             </x-dropdown-link>
                         </form>
                     </x-slot>
@@ -59,20 +62,20 @@
                 @else
                 <a
                     href="{{ route('login') }}"
-                    class="mx-3 my-2 text-gray-500 dark:text-gray-400 hover:text-black/70 dark:hover:text-gray-300 transition duration-150 ease-in-out">
-                    Log in
+                    class="mx-3 my-2 text-neutral-500 dark:text-neutral-400 hover:text-black/70 dark:hover:text-neutral-300 transition duration-150 ease-in-out">
+                    Iniciar Sesión
                 </a>
                 <a
                     href="{{ route('register') }}"
-                    class="ml-3 my-2 text-gray-500 dark:text-gray-400 hover:text-black/70 dark:hover:text-gray-300 transition duration-150 ease-in-out">
-                    Register
+                    class="ml-3 my-2 text-neutral-500 dark:text-neutral-400 hover:text-black/70 dark:hover:text-neutral-300 transition duration-150 ease-in-out">
+                    Registrarse
                 </a>
                 @endauth
             </div>
 
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-purple-600 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-purple-950 focus:outline-none focus:bg-gray-100 dark:focus:bg-purple-950 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">
+                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-neutral-400 dark:text-purple-600 hover:text-neutral-500 dark:hover:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-purple-950 focus:outline-none focus:bg-neutral-100 dark:focus:bg-purple-950 focus:text-neutral-500 dark:focus:text-neutral-400 transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -101,12 +104,12 @@
             <!-- Authentication -->
             <form method="POST" action="{{ route('logout') }}" class="flex justify-between">
                 <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
+                    {{ __('Perfil') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('logout')"
                     onclick="event.preventDefault();
                                     this.closest('form').submit();">
-                    {{ __('Log Out') }}
+                    {{ __('Cerrar Sesión') }}
                 </x-responsive-nav-link>
                 @csrf
 
