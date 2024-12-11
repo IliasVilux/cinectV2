@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -19,6 +20,20 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+        });
+
+        Schema::create('profile_images', function (Blueprint $table) {
+            $table->id();
+            $table->string('url');
+            $table->timestamps();
+        });
+
+        DB::table('profile_images')->insert([
+            ['url' => 'https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg'],
+        ]);
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreignId('profile_image_id')->default(1)->constrained('profile_images')->nullOnDelete();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
@@ -42,6 +57,11 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign(['profile_image_id']);
+            $table->dropColumn('profile_image_id');
+        });
+
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
