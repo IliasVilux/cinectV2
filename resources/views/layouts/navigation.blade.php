@@ -31,7 +31,7 @@
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-neutral-500 dark:text-neutral-400 bg-white dark:bg-neutral-900 hover:text-purple-600 dark:hover:text-neutral-300 focus:outline-none transition ease-in-out duration-150">
                             <div class="flex justify-center items-center">
-                                <img class="aspect-square size-7 rounded-full" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.kindpng.com%2Fpicc%2Fm%2F722-7221920_placeholder-profile-image-placeholder-png-transparent-png.png&f=1&nofb=1&ipt=b2baf921fe788e2b400af96832f5689dc35c864ff33a02dbb473242af23c6736&ipo=images">
+                                <img class="aspect-square size-7 rounded-full" src="{{Auth::user()->profileImage->url}}">
                                 <p class="ml-3">{{ Auth::user()->name }}</p>
                             </div>
                             <div class="ms-1">
