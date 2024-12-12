@@ -30,6 +30,9 @@ return new class extends Migration
 
         DB::table('profile_images')->insert([
             ['url' => 'https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg'],
+            ['url' => 'https://i.pinimg.com/originals/38/1d/6e/381d6edab2cb8693e04e9e5923c20ec6.webp'],
+            ['url' => 'https://img.freepik.com/premium-photo/realistic-cartoon-girl-with-red-hair-glasses-3d-model_899449-43894.jpg'],
+            ['url' => 'https://img.freepik.com/fotos-premium/avatar-personaje-3d_113255-5365.jpg'],
         ]);
 
         Schema::table('users', function (Blueprint $table) {
