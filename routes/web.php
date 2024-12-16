@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AnimeController;
+use App\Http\Controllers\FavoriteListController;
 use App\Http\Controllers\FilmController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
@@ -24,6 +25,10 @@ Route::middleware('auth')->group(function () {
     // ANIMES
     Route::get('/animes', [AnimeController::class, 'returnAnimes'])->name('anime.catalog');
     Route::get('/anime/{id}', [AnimeController::class, 'detail'])->name('anime.detail');
+
+    // FAVORITES LISTS
+    Route::get('/listas', [FavoriteListController::class, 'returnFavoritesLists'])->name('favoriteLists');
+    Route::post('/listas', [FavoriteListController::class, 'store'])->name('favoriteLists.store');
 });
 
 require __DIR__.'/auth.php';
