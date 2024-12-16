@@ -21,6 +21,9 @@
                     <x-nav-link :href="route('anime.catalog')" :active="request()->routeIs('anime.catalog')">
                         {{ __('Animes') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('favoriteLists')" :active="request()->routeIs('favoriteLists')">
+                        {{ __('Mis listas') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -96,6 +99,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('anime.catalog')" :active="request()->routeIs('anime.catalog')">
                 {{ __('Animes') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('favoriteLists')" :active="request()->routeIs('favoriteLists')">
+                {{ __('Mis Listas') }}
             </x-responsive-nav-link>
         </div>
 
