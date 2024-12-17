@@ -18,10 +18,18 @@ class FavoriteList extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function contents(): MorphToMany
+    public function films(): MorphToMany
     {
-        return $this->morphedByMany(Film::class, 'content', 'favorite_list_content')
-                    ->union($this->morphedByMany(Serie::class, 'content', 'favorite_list_content'))
-                    ->union($this->morphedByMany(Anime::class, 'content', 'favorite_list_content'));
+        return $this->morphedByMany(Film::class, 'content', 'favorite_list_content');
+    }
+
+    public function series(): MorphToMany
+    {
+        return $this->morphedByMany(Serie::class, 'content', 'favorite_list_content');
+    }
+
+    public function animes(): MorphToMany
+    {
+        return $this->morphedByMany(Anime::class, 'content', 'favorite_list_content');
     }
 }

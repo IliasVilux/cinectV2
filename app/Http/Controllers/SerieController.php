@@ -113,9 +113,9 @@ class SerieController extends Controller
 
         $user = Auth::user();
         $lists = FavoriteList::where('user_id', $user->id)
-        ->whereDoesntHave('contents', function ($query) use ($id) {
+        ->whereDoesntHave('series', function ($query) use ($id) {
             $query->where('content_id', $id)
-                ->where('content_type', Serie::class);
+                  ->where('content_type', Serie::class);
         })->get();
 
         return view('serie.detail', ['media' => $serie, 'shareButtons' => $shareButtons, 'lists' => $lists]);
@@ -126,7 +126,7 @@ class SerieController extends Controller
         $list = FavoriteList::where('id', $request->input('list_id'))->where('user_id', $user->id)->first();
         $serie = Serie::find($serieId);
 
-        $list->contents()->attach($serie->id, ['content_type' => Serie::class]);
+        $list->series()->attach($serie->id, ['content_type' => Serie::class]);
         $list->save();
 
         return redirect()->route('serie.detail',['id' => $serieId])->with('success', 'Lista creada con éxito.');
