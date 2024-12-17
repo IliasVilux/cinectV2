@@ -88,6 +88,41 @@
                 </div>
             </div>
         </div>
+        <div x-data="{ showModal: false}" class="relative z-20">
+            <div class="flex justify-end">
+                <button @click="showModal = true" class="button bg-purple-600 rounded-full size-12">
+                    <i class="fa-solid fa-bookmark"></i>
+                </button>
+            </div>
+
+            <div x-show="showModal" x-cloak class="fixed inset-0 flex justify-center items-center bg-neutral-950 bg-opacity-80">
+                <form id="favoriteForm" method="post" action="{{ route('serie.store.favoriteList', ['id' => $media->id]) }}">
+                    @csrf
+                    <div class="w-96 p-4 bg-neutral-900 border-b border-neutral-800 rounded-md">
+                        <h2 class="text-lg font-medium mb-4">Listas de favoritos</h2>
+                        <div class="grid grid-cols-1 gap-2">
+                            @foreach ($lists as $list)
+                                <x-text-input 
+                                    id="name" 
+                                    class="block mt-1 w-full cursor-pointer"
+                                    type="text"
+                                    name="name"
+                                    autocomplete="List name"
+                                    readonly
+                                    value="{{ $list->name }}"
+                                    @click="document.getElementById('favoriteForm').submit();" />
+
+                                <input type="hidden" name="list_id" value="{{ $list->id }}">
+                            @endforeach
+                        </div>
+
+                        <button type="button" @click="showModal = false" class="mt-4 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-700">
+                            Cerrar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
     <div x-data="{ showAll: false, seasonsToShow: 3 }" class="max-w-6xl mx-3 lg:mx-auto">

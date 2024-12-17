@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Anime extends Model
 {
@@ -12,8 +12,8 @@ class Anime extends Model
 
     protected $fillable = ['trailer_link', 'poster_path', 'name', 'overview', 'top', 'number_of_episodes', 'genre_id'];
 
-    public function genre(): BelongsTo
+    public function favoriteLists(): MorphToMany
     {
-        return $this->belongsTo(Genre::class);
+        return $this->morphToMany(FavoriteList::class, 'content', 'favorite_list_content', 'content_id', 'favorite_list_id');
     }
 }
