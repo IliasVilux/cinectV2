@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Genre;
+use App\Models\FavoriteList;
 use App\Models\Serie;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Jorenvh\Share\ShareFacade;
 
 class SerieController extends Controller
@@ -111,6 +111,24 @@ class SerieController extends Controller
             ->facebook()
             ->getRawLinks();
 
-        return view('serie.detail', ['media' => $serie, 'shareButtons' => $shareButtons]);
+        $user = Auth::user();
+        $lists = FavoriteList::where('user_id', $user->id)
+        ->whereDoesntHave('contents', function ($query) use ($id) {
+            $query->where('content_id', $id)
+                ->where('content_type', Serie::class);
+        })->get();
+
+        return view('serie.detail', ['media' => $serie, 'shareButtons' => $shareButtons, 'lists' => $lists]);
+    }
+
+    public function storeToFavoriteList(Request $request, $serieId) {
+        $user = Auth::user();
+        $list = FavoriteList::where('id', $request->input('list_id'))->where('user_id', $user->id)->first();
+        $serie = Serie::find($serieId);
+
+        $list->contents()->attach($serie->id, ['content_type' => Serie::class]);
+        $list->save();
+
+        return redirect()->route('serie.detail',['id' => $serieId])->with('success', 'Lista creada con éxito.');
     }
 }
