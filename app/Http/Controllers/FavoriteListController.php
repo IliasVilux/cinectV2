@@ -41,23 +41,6 @@ class FavoriteListController extends Controller
         $list->user_id = $user->id;
         $list->save();
 
-        $films = Film::take(2)->get();
-        $series = Serie::take(2)->get();
-        $animes = Anime::take(2)->get();
-
-
-        foreach ($films as $film) {
-            $list->contents()->attach($film);
-        }
-
-        foreach ($series as $serie) {
-            $list->contents()->attach($serie);
-        }
-
-        foreach ($animes as $anime) {
-            $list->contents()->attach($anime);
-        }
-
         return redirect()->route('favoriteLists')->with('success', 'Lista creada con éxito.');
     }
 }
