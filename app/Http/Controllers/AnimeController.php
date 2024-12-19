@@ -4,20 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Anime;
+use App\Models\FavoriteList;
 use Error;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Jorenvh\Share\ShareFacade;
 
 class AnimeController extends Controller
 {
-    private $tmdb_api_key;
-
-    public function __construct()
-    {
-        $this->tmdb_api_key = env('TMDB_API_KEY');
-    }
-
     public function store()
     {
         set_time_limit(300);
@@ -106,12 +101,30 @@ class AnimeController extends Controller
             abort(404, 'Anime no encontrado');
         }
 
-        $shareButtons = ShareFacade::page(url('serie.detail', $id))
+        $shareButtons = ShareFacade::page(url('anime.detail', $id))
             ->whatsapp()
             ->twitter()
             ->facebook()
             ->getRawLinks();
 
-        return view('anime.detail', ['media' => $anime, 'shareButtons' => $shareButtons]);
+        $user = Auth::user();
+        $lists = FavoriteList::where('user_id', $user->id)
+        ->whereDoesntHave('animes', function ($query) use ($id) {
+            $query->where('content_id', $id)
+                    ->where('content_type', Anime::class);
+        })->get();
+
+        return view('anime.detail', ['media' => $anime, 'shareButtons' => $shareButtons, 'lists' => $lists]);
+    }
+
+    public function storeToFavoriteList(Request $request, $animeId) {
+        $user = Auth::user();
+        $list = FavoriteList::where('id', $request->input('list_id'))->where('user_id', $user->id)->first();
+        $anime = Anime::find($animeId);
+
+        $list->animes()->attach($anime->id, ['content_type' => Anime::class]);
+        $list->save();
+
+        return redirect()->route('anime.detail',['id' => $animeId])->with('success', "Se ha añadido el anime {$anime->name} a la lista {$list->name}.");
     }
 }

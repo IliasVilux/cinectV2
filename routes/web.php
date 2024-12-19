@@ -27,6 +27,7 @@ Route::middleware('auth')->group(function () {
     // ANIMES
     Route::get('/animes', [AnimeController::class, 'returnAnimes'])->name('anime.catalog');
     Route::get('/anime/{id}', [AnimeController::class, 'detail'])->name('anime.detail');
+    Route::post('/anime/{id}', [AnimeController::class, 'storeToFavoriteList'])->name('anime.store.favoriteList');
 
     // FAVORITES LISTS
     Route::get('/listas', [FavoriteListController::class, 'returnFavoritesLists'])->name('favoriteLists');
