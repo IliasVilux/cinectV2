@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
     // FAVORITES LISTS
     Route::get('/listas', [FavoriteListController::class, 'returnFavoritesLists'])->name('favoriteLists');
     Route::post('/listas', [FavoriteListController::class, 'store'])->name('favoriteLists.store');
+    Route::post('/lista/{id}', [FavoriteListController::class, 'destroy'])->name('favoriteLists.destroy');
 });
 
 require __DIR__.'/auth.php';
