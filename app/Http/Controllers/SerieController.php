@@ -129,6 +129,6 @@ class SerieController extends Controller
         $list->series()->attach($serie->id, ['content_type' => Serie::class]);
         $list->save();
 
-        return redirect()->route('serie.detail',['id' => $serieId])->with('success', 'Lista creada con éxito.');
+        return redirect()->route('serie.detail',['id' => $serieId])->with('success', "Se ha añadido la serie {$serie->name} a la lista {$list->name}.");
     }
 }
