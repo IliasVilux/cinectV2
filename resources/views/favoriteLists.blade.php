@@ -6,7 +6,7 @@
                 Añadir nueva lista
             </button>
 
-            <div x-show="showModal" x-cloak class="fixed inset-0 flex justify-center items-center bg-neutral-950 bg-opacity-80">
+            <div x-show="showModal" x-cloak class="fixed inset-0 flex justify-center items-center bg-neutral-950 bg-opacity-80 z-10">
                 <div class="w-96 p-4 bg-neutral-800 border-b border-neutral-700 rounded-md">
                     <form action="{{ route('favoriteLists.store') }}" method="POST">
                         @csrf
@@ -36,23 +36,21 @@
             @foreach($lists as $list)
             <div class="bg-neutral-950 rounded-lg px-12 py-6 border-b border-neutral-800">
                 <h3 class="text-3xl text-purple-600 font-bold capitalize mb-4">{{ $list->name }}</h3>
+                @if ($list->allContents)
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-7 gap-4 col-span-4">
                     @foreach ($list->allContents as $content)
                     @if ($content instanceof App\Models\Film)
-                    <a href="{{ route('film.detail', $content->id) }}">
-                        <img class="aspect-[4/6] w-full rounded-lg" src="https://image.tmdb.org/t/p/original{{ $content->poster_path }}" alt="{{ $content->name }}">
-                    </a>
+                    <x-media-card :media="$content" mediaType="film" />
                     @elseif ($content instanceof App\Models\Serie)
-                    <a href="{{ route('serie.detail', $content->id) }}">
-                        <img class="aspect-[4/6] w-full rounded-lg" src="https://image.tmdb.org/t/p/original{{ $content->poster_path }}" alt="{{ $content->name }}">
-                    </a>
+                    <x-media-card :media="$content" mediaType="serie" />
                     @elseif ($content instanceof App\Models\Anime)
-                    <a href="{{ route('anime.detail', $content->id) }}">
-                        <img class="aspect-[4/6] w-full rounded-lg" src="{{ $content->poster_path }}" alt="{{ $content->name }}">
-                    </a>
+                    <x-media-card :media="$content" mediaType="anime" />
                     @endif
                     @endforeach
                 </div>
+                @else
+                <p>No hay contenido asociado a esta lista</p>
+                @endif
             </div>
             @endforeach
         </div>
