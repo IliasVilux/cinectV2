@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\FavoriteList;
 use App\Models\Film;
-use App\Models\Genre;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Jorenvh\Share\ShareFacade;
 
 class FilmController extends Controller
@@ -108,6 +109,23 @@ class FilmController extends Controller
             ->facebook()
             ->getRawLinks();
 
-        return view('film.detail', ['media' => $film, 'shareButtons' => $shareButtons]);
+        $user = Auth::user();
+        $lists = FavoriteList::where('user_id', $user->id)
+        ->whereDoesntHave('films', function ($query) use ($id) {
+            $query->where('content_id', $id)
+                  ->where('content_type', Film::class);
+        })->get();
+        return view('film.detail', ['media' => $film, 'shareButtons' => $shareButtons, 'lists' => $lists]);
+    }
+
+    public function storeToFavoriteList(Request $request, $filmId) {
+        $user = Auth::user();
+        $list = FavoriteList::where('id', $request->input('list_id'))->where('user_id', $user->id)->first();
+        $film = Film::find($filmId);
+
+        $list->films()->attach($film->id, ['content_type' => Film::class]);
+        $list->save();
+
+        return redirect()->route('film.detail',['id' => $filmId])->with('success', "Se ha añadido la película {$film->name} a la lista {$list->name}.");
     }
 }

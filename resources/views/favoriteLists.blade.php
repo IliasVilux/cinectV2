@@ -6,7 +6,7 @@
                 Añadir nueva lista
             </button>
 
-            <div x-show="showModal" x-cloak class="fixed inset-0 flex justify-center items-center bg-neutral-950 bg-opacity-80">
+            <div x-show="showModal" x-cloak class="fixed inset-0 flex justify-center items-center bg-neutral-950 bg-opacity-80 z-10">
                 <div class="w-96 p-4 bg-neutral-800 border-b border-neutral-700 rounded-md">
                     <form action="{{ route('favoriteLists.store') }}" method="POST">
                         @csrf
@@ -34,25 +34,32 @@
 
         <div class="grid grid-cols-1 gap-2">
             @foreach($lists as $list)
-            <div class="bg-neutral-950 rounded-lg px-12 py-6 border-b border-neutral-800">
-                <h3 class="text-3xl text-purple-600 font-bold capitalize mb-4">{{ $list->name }}</h3>
+            <div x-data="{ hover: false }" @mouseenter="hover = true" @mouseleave="hover = false" class="bg-neutral-950 rounded-lg px-12 py-6 border-b border-neutral-800">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-3xl text-purple-600 font-bold capitalize">{{ $list->name }}</h3>
+                    <form method="post" action="{{ route('favoriteLists.destroy', $list->id) }}" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta lista?');" class="inline">
+                        @csrf
+                        <button type="submit" class="text-red-500 transition-opacity duration-300"
+                                :class="hover ? 'opacity-100' : 'opacity-0'">
+                            <i class="fa-regular fa-trash-can cursor-pointer"></i>
+                        </button>
+                    </form>
+                </div>
+                @if ($list->allContents && $list->allContents->isNotEmpty())
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-7 gap-4 col-span-4">
                     @foreach ($list->allContents as $content)
                     @if ($content instanceof App\Models\Film)
-                    <a href="{{ route('film.detail', $content->id) }}">
-                        <img class="aspect-[4/6] w-full rounded-lg" src="https://image.tmdb.org/t/p/original{{ $content->poster_path }}" alt="{{ $content->name }}">
-                    </a>
+                    <x-media-card :media="$content" mediaType="film" />
                     @elseif ($content instanceof App\Models\Serie)
-                    <a href="{{ route('serie.detail', $content->id) }}">
-                        <img class="aspect-[4/6] w-full rounded-lg" src="https://image.tmdb.org/t/p/original{{ $content->poster_path }}" alt="{{ $content->name }}">
-                    </a>
+                    <x-media-card :media="$content" mediaType="serie" />
                     @elseif ($content instanceof App\Models\Anime)
-                    <a href="{{ route('anime.detail', $content->id) }}">
-                        <img class="aspect-[4/6] w-full rounded-lg" src="{{ $content->poster_path }}" alt="{{ $content->name }}">
-                    </a>
+                    <x-media-card :media="$content" mediaType="anime" />
                     @endif
                     @endforeach
                 </div>
+                @else
+                <p class="text-neutral-400">No hay contenido asociado a esta lista.</p>
+                @endif
             </div>
             @endforeach
         </div>

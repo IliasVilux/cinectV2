@@ -43,4 +43,14 @@ class FavoriteListController extends Controller
 
         return redirect()->route('favoriteLists')->with('success', 'Lista creada con éxito.');
     }
+
+    public function destroy($IdLista)
+    {
+        $user = Auth::user();
+        $list = FavoriteList::where('id', $IdLista)->where('user_id', $user->id)->first();
+
+        $list->delete();
+
+        return redirect()->route('favoriteLists')->with('success', 'Lista eliminada correctamente.');
+    }
 }
