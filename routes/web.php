@@ -22,6 +22,7 @@ Route::middleware('auth')->group(function () {
     // FILMS
     Route::get('/películas', [FilmController::class, 'returnFilms'])->name('film.catalog');
     Route::get('/película/{id}', [FilmController::class, 'detail'])->name('film.detail');
+    Route::post('/película/{id}', [FilmController::class, 'storeToFavoriteList'])->name('film.store.favoriteList');
 
     // ANIMES
     Route::get('/animes', [AnimeController::class, 'returnAnimes'])->name('anime.catalog');
