@@ -15,8 +15,8 @@
                     </div>
                 </div>
 
-                <div class="mt-3 hidden md:block">
-                    <div class="grid grid-cols-4 gap-3 bg-black bg-opacity-75 rounded-md p-3 items-center">
+                <div class="hidden md:block">
+                    <div class="my-3 grid grid-cols-4 gap-3 bg-black bg-opacity-75 rounded-md p-3 items-center">
                         <i class="fa-solid fa-share-from-square text-center text-sm"></i>
                         @foreach($shareButtons as $key => $url)
                             <a href="{{ $url }}" class="text-center text-lg px-2 py-1 bg-neutral-800 bg-opacity-40 border-b border-neutral-800 rounded-md hover:text-purple-400 hover:border-purple-600 hover:text-md transition duration-300" target="_blank">
@@ -30,6 +30,7 @@
                             </a>
                         @endforeach
                     </div>
+                    <x-star-rating :mediaId="$media->id" mediaType="película" />
                 </div>
             </div>
 
@@ -51,7 +52,7 @@
             </div>
 
             <div class="block md:hidden">
-                <div class="grid grid-cols-4 gap-3 bg-black bg-opacity-75 rounded-md p-3 items-center">
+                <div class="mb-6 grid grid-cols-4 gap-3 bg-black bg-opacity-75 rounded-md p-3 items-center">
                     <i class="fa-solid fa-share-from-square text-center text-sm"></i>
                     @foreach($shareButtons as $key => $url)
                         <a href="{{ $url }}" class="text-center text-lg px-2 py-1 bg-neutral-800 bg-opacity-40 border-b border-neutral-800 rounded-md hover:text-purple-400 hover:border-purple-600 hover:text-md transition duration-300" target="_blank">
@@ -65,12 +66,13 @@
                         </a>
                     @endforeach
                 </div>
+                <x-star-rating :mediaId="$media->id" mediaType="película" />
             </div>
         </div>
 
-        <div class="flex justify-end items-center relative z-20">
+        <div class="flex md:justify-end items-center relative z-20">
             @if (session('success'))
-                <p class="text-purple-200">{{ session('success') }}</p>
+                <p class="text-purple-200 mt-6 md:mt-0">{{ session('success') }}</p>
             @endif
             @if (count($lists) > 0)
             <div x-data="{ showModal: false}">

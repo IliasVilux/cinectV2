@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Serie extends Model
@@ -27,5 +28,10 @@ class Serie extends Model
     public function favoriteLists(): MorphToMany
     {
         return $this->morphToMany(FavoriteList::class, 'content', 'favorite_list_content', 'content_id', 'favorite_list_id');
+    }
+
+    public function ratings(): MorphMany
+    {
+        return $this->morphMany(Rating::class, 'content');
     }
 }
