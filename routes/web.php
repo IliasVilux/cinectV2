@@ -5,6 +5,7 @@ use App\Http\Controllers\FavoriteListController;
 use App\Http\Controllers\FilmController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RatingController;
 use App\Http\Controllers\SerieController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,6 +34,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/listas', [FavoriteListController::class, 'returnFavoritesLists'])->name('favoriteLists');
     Route::post('/listas', [FavoriteListController::class, 'store'])->name('favoriteLists.store');
     Route::post('/lista/{id}', [FavoriteListController::class, 'destroy'])->name('favoriteLists.destroy');
+
+    Route::post('/rating/{mediaId}/{mediaType}', [RatingController::class, 'setRating'])->name('rating.setRating');
 });
 
 require __DIR__.'/auth.php';
