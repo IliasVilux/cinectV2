@@ -16,7 +16,14 @@
         @endfor
     </form>
 </div>
-<p class="text-neutral-400">Opinión del público: {{ $avgRating }} / 5</p>
+<p class="text-neutral-400">
+    Opinión del público: 
+    @if ($avgRating)
+        {{ number_format($avgRating, 1) }} / 5
+    @else
+        N/A
+    @endif
+</p>
 
 <script>
     function setRating(rating) {
