@@ -32,8 +32,14 @@ RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
 
 RUN if [ -f composer.json ]; then \
+    echo "composer.json encontrado. Intentando instalar dependencias..."; \
+    if [ -f composer.lock ]; then \
+        echo "composer.lock encontrado. Instalando dependencias bloqueadas..."; \
+    fi; \
     composer install --no-dev --optimize-autoloader || { \
-        echo "Error en composer install, revisa las configuraciones del proyecto."; \
+        echo "Error en composer install. Mostrando diagnóstico:"; \
+        composer diagnose; \
+        composer check-platform-reqs; \
         exit 1; \
     }; \
 else \
