@@ -25,10 +25,17 @@ RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
 
 RUN if [ -f composer.json ]; then \
+    composer validate --no-check-publish || { \
+        echo "composer.json no es válido, revisa las configuraciones."; \
+        exit 1; \
+    }; \
+    composer check-platform-reqs || { \
+        echo "Requisitos de la plataforma no cumplidos. Revisa las extensiones de PHP."; \
+        exit 1; \
+    }; \
     composer install --no-dev --optimize-autoloader --verbose || { \
         echo "Error en composer install, mostrando detalles:"; \
         composer diagnose; \
-        composer check-platform-reqs; \
         exit 1; \
     }; \
 else \
