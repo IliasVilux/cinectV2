@@ -1,9 +1,14 @@
 {
     "version": 2,
-    "framework": null,
-    "functions": {
-        "api/index.php": { "runtime": "vercel-php@0.6.0" }
-    },
+    "builds": [
+      {
+        "src": "api/index.php",
+        "use": "@vercel/php",
+        "config": {
+          "phpVersion": "8.1"
+        }
+      }
+    ],
     "routes": [
       {
         "src": "/(.*)",
@@ -11,4 +16,3 @@
       }
     ]
   }
-  
