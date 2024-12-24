@@ -12,34 +12,36 @@ RUN apt-get update \
        zip \
        unzip \
        git \
+       curl \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl gd xml \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs \
+    && npm install -g npm@latest \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY . /var/www/html
 
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
 
-RUN if [ -f composer.json ]; then \
-    composer validate --no-check-publish || { \
-        echo "composer.json no es válido, revisa las configuraciones."; \
+RUN if [ -f package.json ]; then \
+    npm install || { \
+        echo "Error en npm install, revisa las configuraciones del proyecto."; \
         exit 1; \
     }; \
-    composer check-platform-reqs || { \
-        echo "Requisitos de la plataforma no cumplidos. Revisa las extensiones de PHP."; \
-        exit 1; \
-    }; \
-    composer install --no-dev --optimize-autoloader --verbose || { \
-        echo "Error en composer install, mostrando detalles:"; \
-        composer diagnose; \
-        exit 1; \
-    }; \
+    if [ -f vite.config.js ]; then \
+        npm run build || { \
+            echo "Error al construir los assets con npm run build."; \
+            exit 1; \
+        }; \
+    fi; \
 else \
-    echo "Archivo composer.json no encontrado. Verifica que se haya copiado correctamente."; \
+    echo "Archivo package.json no encontrado. Verifica que se haya copiado correctamente."; \
     exit 1; \
 fi
 
