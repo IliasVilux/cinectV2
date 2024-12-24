@@ -24,10 +24,22 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
 COPY . /var/www/html
 
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
+
+RUN if [ -f composer.json ]; then \
+    composer install --no-dev --optimize-autoloader || { \
+        echo "Error en composer install, revisa las configuraciones del proyecto."; \
+        exit 1; \
+    }; \
+else \
+    echo "Archivo composer.json no encontrado. Verifica que se haya copiado correctamente."; \
+    exit 1; \
+fi
 
 RUN if [ -f package.json ]; then \
     npm install || { \
