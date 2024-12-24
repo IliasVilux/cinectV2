@@ -24,7 +24,11 @@ COPY . /var/www/html
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
 
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install --no-dev --optimize-autoloader || { \
+    echo "Error en composer install, mostrando detalles:"; \
+    composer diagnose; \
+    exit 1; \
+}
 
 RUN a2enmod rewrite
 
