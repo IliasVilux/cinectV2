@@ -24,11 +24,17 @@ COPY . /var/www/html
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
 
-RUN composer install --no-dev --optimize-autoloader || { \
-    echo "Error en composer install, mostrando detalles:"; \
-    composer diagnose; \
+RUN if [ -f composer.json ]; then \
+    composer install --no-dev --optimize-autoloader --verbose || { \
+        echo "Error en composer install, mostrando detalles:"; \
+        composer diagnose; \
+        composer check-platform-reqs; \
+        exit 1; \
+    }; \
+else \
+    echo "Archivo composer.json no encontrado. Verifica que se haya copiado correctamente."; \
     exit 1; \
-}
+fi
 
 RUN a2enmod rewrite
 
