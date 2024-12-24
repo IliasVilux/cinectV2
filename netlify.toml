@@ -1,2 +1,11 @@
 [context.production.environment]
 PHP_VERSION = "8.2"
+
+[build]
+  publish = "public"
+  command = "composer install && php artisan view:cache"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.php"
+  status = 200
